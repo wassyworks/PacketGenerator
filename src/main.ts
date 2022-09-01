@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { Parser } from './parser';
 
 const workingDir = process.cwd();
 const packetDirName = 'packets'; // パケットファイルを置くディレクトリ名
@@ -22,7 +23,8 @@ for (const file of files) {
             `${workingDir}/${packetDirName}/${file.name}`,
             'utf8',
         );
-        console.log(buffer);
+
+        const parser = new Parser(buffer);
     } catch (error) {
         console.log(`failed to read error:${error}`);
     }

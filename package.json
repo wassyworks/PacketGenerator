@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "./src/main.ts",
-  "type":"module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node --esm src/main.ts"
+    "dev": "ts-node src/main.ts"
   },
   "keywords": [],
   "author": "",
