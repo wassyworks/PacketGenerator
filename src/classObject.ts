@@ -4,11 +4,11 @@ export class ClassMember {
     name = "";
     initValue = "";
 
-    constructor(type: string, name: string, initValue = "", isVector = false) {
+    constructor(type: string, name: string, isVector = false, initValue = "") {
         this.type = type;
         this.name = name;
-        this.initValue = initValue;
         this.isVector = isVector;
+        this.initValue = initValue;
     }
 }
 
@@ -44,7 +44,7 @@ export class ClassObject {
     private VectorTypeFromString(word: string) {
         const result = word.match(/vec<.*>/);
         if (result?.length) {
-            return result[0].substring(3, result[0].length - 1);
+            return result[0].substring(4, result[0].length - 1);
         } else {
             console.log(`not vector type: ${word}`);
             return "";
@@ -59,7 +59,7 @@ export class ClassObject {
                 // パケットのタグ指定
                 this.#packetTag = words[index + 1];
             } else if (this.IsPrimitiveType(words[index + 1])) {
-                console.log(`primitive: ${words[index + 1]}`);
+                // プリミティブ型の保持
                 this.#members.push(
                     new ClassMember(words[index], words[index + 1]),
                 );
@@ -67,9 +67,13 @@ export class ClassObject {
                 // 値まで読み込んだのでインデックスを進める
                 index++;
             } else if (this.IsVectorType(words[index + 1])) {
-                console.log(`vector:${words[index + 1]}`);
+                // ベクター型の保持
                 this.#members.push(
-                    new ClassMember(words[index], words[index + 1]),
+                    new ClassMember(
+                        words[index],
+                        this.VectorTypeFromString(words[index + 1]),
+                        true,
+                    ),
                 );
                 // 値まで読み込んだのでインデックスを進める
                 index++;

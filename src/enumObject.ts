@@ -16,7 +16,6 @@ export class EnumObject {
     private ParseParameters(words: string[]): boolean {
         let incrementValue = 0;
         for (let index = 0; index < words.length; ++index) {
-            console.log(`enum: ${words[index]}:${incrementValue}`);
             this.#parameters.push(
                 new EnumParameters(words[index], incrementValue),
             );
