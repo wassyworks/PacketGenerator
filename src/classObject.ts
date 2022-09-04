@@ -1,7 +1,7 @@
 export class ClassMember {
     type = "";
-    isVector = false;
     name = "";
+    isVector = false;
     initValue = "";
 
     constructor(type: string, name: string, isVector = false, initValue = "") {
@@ -61,15 +61,12 @@ export class ClassObject {
             if (words[index] === "PacketTag") {
                 // パケットのタグ指定
                 this.#packetTag = words[index + 1];
-            } else if (this.IsPrimitiveType(words[index + 1])) {
+            } else if (this.IsPrimitiveType(words[index])) {
                 // プリミティブ型の保持
                 this.#members.push(
                     new ClassMember(words[index], words[index + 1]),
                 );
-
-                // 値まで読み込んだのでインデックスを進める
-                index++;
-            } else if (this.IsVectorType(words[index + 1])) {
+            } else if (this.IsVectorType(words[index])) {
                 // ベクター型の保持
                 this.#members.push(
                     new ClassMember(
@@ -78,14 +75,15 @@ export class ClassObject {
                         true,
                     ),
                 );
-                // 値まで読み込んだのでインデックスを進める
-                index++;
             } else {
                 console.log(
                     `Error!! invalid class parameters. ${words[index]}, words:${words}`,
                 );
                 return false;
             }
+
+            // 値まで読み込んだのでインデックスを進める
+            index++;
         }
 
         return true;
@@ -108,8 +106,8 @@ export class ClassObject {
     }
 
     DebugLog() {
-        console.log(`className:${JSON.stringify(this.#className)}`);
-        console.log(`packetTag:${JSON.stringify(this.#packetTag)}`);
-        console.log(`members:${JSON.stringify(this.#members)}`);
+        console.log(`className:${JSON.stringify(this.#className, null, "  ")}`);
+        console.log(`packetTag:${JSON.stringify(this.#packetTag, null, "  ")}`);
+        console.log(`members:${JSON.stringify(this.#members, null, "  ")}`);
     }
 }

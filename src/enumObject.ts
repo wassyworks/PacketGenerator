@@ -38,7 +38,9 @@ export class EnumObject {
     }
 
     DebugLog() {
-        console.log(`enumName:${JSON.stringify(this.#enumName)}`);
-        console.log(`parameters:${JSON.stringify(this.#parameters)}`);
+        console.log(`enumName:${JSON.stringify(this.#enumName, null, "  ")}`);
+        console.log(
+            `parameters:${JSON.stringify(this.#parameters, null, "  ")}`,
+        );
     }
 }
