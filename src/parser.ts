@@ -1,4 +1,5 @@
 import { ClassObject } from "./classObject";
+import { EnumObject } from "./enumObject";
 
 export class Parser {
     #rawString = "";
@@ -29,6 +30,7 @@ export class Parser {
         const words = this.SplitWards();
         for (let index = 0; index < words.length; index++) {
             if (words[index].search("class") !== -1) {
+                // class定義のパーシング
                 const [result, idx] = this.ReadClass(words, index);
                 if (result) {
                     index = idx;
@@ -36,6 +38,7 @@ export class Parser {
                     return;
                 }
             } else if (words[index].search("enum") !== -1) {
+                // enum定義のパーシング
                 const [result, idx] = this.ReadEnum(words, index);
                 if (result) {
                     index = idx;
@@ -77,8 +80,10 @@ export class Parser {
             return [result, 0];
         }
 
+        // パラメータはClassObject側で解釈、保持する
         const co = new ClassObject();
         co.Parse(words.slice(++index, idx));
+        // TODO: オブジェクトの保持
 
         return [result, idx];
     }
@@ -86,13 +91,19 @@ export class Parser {
     ReadEnum(words: string[], index: number): [boolean, number] {
         // enum名を読む
         // {}を読む
-        const enumname = words[index + 1];
+        const enumname = words[++index];
         console.log(`enumname:${enumname}`);
-        const [result, idx] = this.ReadBrackets(words, index + 2);
+        const [result, idx] = this.ReadBrackets(words, ++index);
         if (!result) {
             console.log(`Error!! failed to read brackets. ${words[index]}`);
             return [result, 0];
         }
+
+        // パラメータはEnumObject側で解釈、保持する
+        const eo = new EnumObject();
+        eo.Parse(words.slice(++index, idx));
+        // TODO: オブジェクトの保持
+
         return [result, idx];
     }
 }
