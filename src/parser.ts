@@ -72,8 +72,7 @@ export class Parser {
     ReadClass(words: string[], index: number): [boolean, number] {
         // クラス名を読む
         // {}を読む
-        const classname = words[++index];
-        console.log(`classname:${classname}`);
+        const className = words[++index];
         const [result, idx] = this.ReadBrackets(words, ++index);
         if (!result) {
             console.log(`Error!! failed to read brackets. ${words[index]}`);
@@ -81,8 +80,9 @@ export class Parser {
         }
 
         // パラメータはClassObject側で解釈、保持する
-        const co = new ClassObject();
+        const co = new ClassObject(className);
         co.Parse(words.slice(++index, idx));
+        co.DebugLog();
         // TODO: オブジェクトの保持
 
         return [result, idx];
@@ -91,8 +91,7 @@ export class Parser {
     ReadEnum(words: string[], index: number): [boolean, number] {
         // enum名を読む
         // {}を読む
-        const enumname = words[++index];
-        console.log(`enumname:${enumname}`);
+        const enumName = words[++index];
         const [result, idx] = this.ReadBrackets(words, ++index);
         if (!result) {
             console.log(`Error!! failed to read brackets. ${words[index]}`);
@@ -100,8 +99,9 @@ export class Parser {
         }
 
         // パラメータはEnumObject側で解釈、保持する
-        const eo = new EnumObject();
+        const eo = new EnumObject(enumName);
         eo.Parse(words.slice(++index, idx));
+        eo.DebugLog();
         // TODO: オブジェクトの保持
 
         return [result, idx];

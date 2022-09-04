@@ -11,6 +11,9 @@ export class EnumParameters {
 export class EnumObject {
     #enumName = "";
     #parameters: EnumParameters[] = [];
+    constructor(enumName: string) {
+        this.#enumName = enumName;
+    }
 
     // enum名と値を解析
     private ParseParameters(words: string[]): boolean {
@@ -32,5 +35,10 @@ export class EnumObject {
         }
 
         return this.ParseParameters(words);
+    }
+
+    DebugLog() {
+        console.log(`enumName:${JSON.stringify(this.#enumName)}`);
+        console.log(`parameters:${JSON.stringify(this.#parameters)}`);
     }
 }

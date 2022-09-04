@@ -18,6 +18,9 @@ export class ClassObject {
     #className = "";
     #members: ClassMember[] = [];
     #packetTag = "";
+    constructor(className: string) {
+        this.#className = className;
+    }
 
     private IsPrimitiveType(word: string) {
         return (
@@ -102,5 +105,11 @@ export class ClassObject {
         // }
 
         return this.ParseParameters(words);
+    }
+
+    DebugLog() {
+        console.log(`className:${JSON.stringify(this.#className)}`);
+        console.log(`packetTag:${JSON.stringify(this.#packetTag)}`);
+        console.log(`members:${JSON.stringify(this.#members)}`);
     }
 }
