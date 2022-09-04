@@ -1,3 +1,5 @@
+import { ClassObject } from "./classObject";
+
 export class Parser {
     #rawString = "";
 
@@ -6,19 +8,25 @@ export class Parser {
         this.Parse();
     }
 
-    Parse() {
+    SplitWards(): string[] {
         const lines = this.#rawString.split(/\r\n|\n/);
         // 1単語区切りにする
         const words: string[] = [];
         for (const line of lines) {
+            if (line.match(/^\/\//)) {
+                continue;
+            }
             for (const word of line.trim().split(" ")) {
                 if (word !== "") {
                     words.push(word);
                 }
             }
         }
+        return words;
+    }
 
-        // for debug
+    Parse() {
+        const words = this.SplitWards();
         for (let index = 0; index < words.length; index++) {
             if (words[index].search("class") !== -1) {
                 const [result, idx] = this.ReadClass(words, index);
@@ -61,12 +69,17 @@ export class Parser {
     ReadClass(words: string[], index: number): [boolean, number] {
         // クラス名を読む
         // {}を読む
-        const classname = words[index + 1];
+        const classname = words[++index];
         console.log(`classname:${classname}`);
-        const [result, idx] = this.ReadBrackets(words, index + 2);
+        const [result, idx] = this.ReadBrackets(words, ++index);
         if (!result) {
             console.log(`Error!! failed to read brackets. ${words[index]}`);
+            return [result, 0];
         }
+
+        const co = new ClassObject();
+        co.Parse(words.slice(++index, idx));
+
         return [result, idx];
     }
 
@@ -78,6 +91,7 @@ export class Parser {
         const [result, idx] = this.ReadBrackets(words, index + 2);
         if (!result) {
             console.log(`Error!! failed to read brackets. ${words[index]}`);
+            return [result, 0];
         }
         return [result, idx];
     }
