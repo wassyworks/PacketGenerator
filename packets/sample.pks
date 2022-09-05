@@ -1,6 +1,8 @@
 enum PacketTags {
     SimpleEntity
     SecondTag
+    InitValueTest = 10
+    IncrementTest
 }
 
 // テスト用

@@ -19,9 +19,23 @@ export class EnumObject {
     private ParseParameters(words: string[]): boolean {
         let incrementValue = 0;
         for (let index = 0; index < words.length; ++index) {
-            this.#parameters.push(
-                new EnumParameters(words[index], incrementValue),
-            );
+            if (words[index + 1] === "=") {
+                // 初期値あり
+                if (isNaN(Number(words[index + 2]))) {
+                    return false;
+                }
+
+                incrementValue = Number(words[index + 2]);
+                this.#parameters.push(
+                    new EnumParameters(words[index], incrementValue),
+                );
+                index += 2;
+            } else {
+                // 初期値なし
+                this.#parameters.push(
+                    new EnumParameters(words[index], incrementValue),
+                );
+            }
             incrementValue++;
         }
 
