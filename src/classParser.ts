@@ -78,7 +78,6 @@ export class ClassParser extends ParserBase {
             // 値まで読み込んだのでインデックスを進める
             idx++;
         }
-        co.DebugLog();
 
         return [true, co];
     }

@@ -37,8 +37,6 @@ export class EnumParser extends ParserBase {
             incrementValue++;
         }
 
-        eo.DebugLog();
-
         return [true, eo];
     }
 }
