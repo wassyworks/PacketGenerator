@@ -1,8 +1,10 @@
-import { ClassObject } from "./classObject";
-import { EnumObject } from "./enumObject";
+import { ClassParser } from "./classParser";
+import { EnumParser } from "./enumParser";
+import { ParsedObject } from "./parsedObject";
 
 export class Parser {
     #rawString = "";
+    #parsedArray: ParsedObject[] = [];
 
     constructor(str: string) {
         this.#rawString = str;
@@ -31,7 +33,7 @@ export class Parser {
         for (let index = 0; index < words.length; index++) {
             if (words[index].search("class") !== -1) {
                 // class定義のパーシング
-                const [result, idx] = this.ReadClass(words, index);
+                const [result, idx] = this.ParseClass(words, index);
                 if (result) {
                     index = idx;
                 } else {
@@ -39,7 +41,7 @@ export class Parser {
                 }
             } else if (words[index].search("enum") !== -1) {
                 // enum定義のパーシング
-                const [result, idx] = this.ReadEnum(words, index);
+                const [result, idx] = this.ParseEnum(words, index);
                 if (result) {
                     index = idx;
                 } else {
@@ -50,6 +52,10 @@ export class Parser {
                     `Error!! syntax error. index:${index}, word:${words[index]}`,
                 );
             }
+        }
+
+        for (const obj of this.#parsedArray) {
+            obj.DebugLog();
         }
     }
 
@@ -69,41 +75,62 @@ export class Parser {
         return [false, 0];
     }
 
-    ReadClass(words: string[], index: number): [boolean, number] {
+    ParseClass(words: string[], index: number): [boolean, number] {
         // クラス名を読む
         // {}を読む
         const className = words[++index];
-        const [result, idx] = this.ReadBrackets(words, ++index);
-        if (!result) {
+
+        const [readbracketsResult, endBracketIdx] = this.ReadBrackets(
+            words,
+            ++index,
+        );
+        if (!readbracketsResult) {
             console.log(`Error!! failed to read brackets. ${words[index]}`);
-            return [result, 0];
+            return [readbracketsResult, 0];
         }
 
         // パラメータはClassObject側で解釈、保持する
-        const co = new ClassObject(className);
-        co.Parse(words.slice(++index, idx));
-        co.DebugLog();
-        // TODO: オブジェクトの保持
+        const cp = new ClassParser();
+        const [parseResult, parsedObj] = cp.Parse(
+            className,
+            words.slice(++index, endBracketIdx),
+        );
+        if (!parseResult) {
+            console.log(`Error!! failed to parse class`);
+            return [parseResult, 0];
+        }
+        this.#parsedArray.push(parsedObj);
 
-        return [result, idx];
+        return [true, endBracketIdx];
     }
 
-    ReadEnum(words: string[], index: number): [boolean, number] {
+    ParseEnum(words: string[], index: number): [boolean, number] {
         // enum名を読む
         // {}を読む
         const enumName = words[++index];
-        const [result, idx] = this.ReadBrackets(words, ++index);
-        if (!result) {
+
+        const [readBracketsResult, endBracketIdx] = this.ReadBrackets(
+            words,
+            ++index,
+        );
+        if (!readBracketsResult) {
             console.log(`Error!! failed to read brackets. ${words[index]}`);
-            return [result, 0];
+            return [readBracketsResult, 0];
         }
 
         // パラメータはEnumObject側で解釈、保持する
-        const eo = new EnumObject(enumName);
-        eo.Parse(words.slice(++index, idx));
-        eo.DebugLog();
-        // TODO: オブジェクトの保持
+        const eo = new EnumParser();
+        const [parseResult, parsedObj] = eo.Parse(
+            enumName,
+            words.slice(++index, endBracketIdx),
+        );
 
-        return [result, idx];
+        if (!parseResult) {
+            console.log(`Error!! failed to parse class`);
+            return [parseResult, 0];
+        }
+        this.#parsedArray.push(parsedObj);
+
+        return [parseResult, endBracketIdx];
     }
 }
