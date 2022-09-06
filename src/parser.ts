@@ -1,5 +1,5 @@
-import { ClassObject } from "./classObject";
-import { EnumObject } from "./enumObject";
+import { ClassParser } from "./classParser";
+import { EnumParser } from "./enumParser";
 
 export class Parser {
     #rawString = "";
@@ -31,7 +31,7 @@ export class Parser {
         for (let index = 0; index < words.length; index++) {
             if (words[index].search("class") !== -1) {
                 // class定義のパーシング
-                const [result, idx] = this.ReadClass(words, index);
+                const [result, idx] = this.ParseClass(words, index);
                 if (result) {
                     index = idx;
                 } else {
@@ -39,7 +39,7 @@ export class Parser {
                 }
             } else if (words[index].search("enum") !== -1) {
                 // enum定義のパーシング
-                const [result, idx] = this.ReadEnum(words, index);
+                const [result, idx] = this.ParseEnum(words, index);
                 if (result) {
                     index = idx;
                 } else {
@@ -69,7 +69,7 @@ export class Parser {
         return [false, 0];
     }
 
-    ReadClass(words: string[], index: number): [boolean, number] {
+    ParseClass(words: string[], index: number): [boolean, number] {
         // クラス名を読む
         // {}を読む
         const className = words[++index];
@@ -80,15 +80,14 @@ export class Parser {
         }
 
         // パラメータはClassObject側で解釈、保持する
-        const co = new ClassObject(className);
-        co.Parse(words.slice(++index, idx));
-        co.DebugLog();
+        const cp = new ClassParser();
+        cp.Parse(className, words.slice(++index, idx));
         // TODO: オブジェクトの保持
 
         return [result, idx];
     }
 
-    ReadEnum(words: string[], index: number): [boolean, number] {
+    ParseEnum(words: string[], index: number): [boolean, number] {
         // enum名を読む
         // {}を読む
         const enumName = words[++index];
@@ -99,9 +98,8 @@ export class Parser {
         }
 
         // パラメータはEnumObject側で解釈、保持する
-        const eo = new EnumObject(enumName);
-        eo.Parse(words.slice(++index, idx));
-        eo.DebugLog();
+        const eo = new EnumParser();
+        eo.Parse(enumName, words.slice(++index, idx));
         // TODO: オブジェクトの保持
 
         return [result, idx];
