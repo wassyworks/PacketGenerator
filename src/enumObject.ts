@@ -1,3 +1,4 @@
+import { EnumConverter } from "./enumConverter";
 import { ParsedObject } from "./parsedObject";
 
 export class EnumParameter {
@@ -22,5 +23,9 @@ export class EnumObject extends ParsedObject {
         console.log(
             `parameters:${JSON.stringify(this.#parameters, null, "  ")}`,
         );
+    }
+
+    public override AcceptEnumConverter(converer: EnumConverter): void {
+        converer.Receive(this);
     }
 }

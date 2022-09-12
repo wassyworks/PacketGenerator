@@ -1,3 +1,4 @@
+import { ClassConverter } from "./classConverter";
 import { ParsedObject } from "./parsedObject";
 
 export class ClassMember {
@@ -18,6 +19,9 @@ export class ClassObject extends ParsedObject {
     #members: ClassMember[] = [];
     #packetTag = "";
 
+    constructor(name: string) {
+        super(name, "class");
+    }
     AddMember(member: ClassMember) {
         this.#members.push(member);
     }
@@ -30,5 +34,9 @@ export class ClassObject extends ParsedObject {
         console.log(`className:${JSON.stringify(this.GetName(), null, "  ")}`);
         console.log(`packetTag:${JSON.stringify(this.#packetTag, null, "  ")}`);
         console.log(`members:${JSON.stringify(this.#members, null, "  ")}`);
+    }
+
+    public override AcceptClassConverter(converer: ClassConverter): void {
+        converer.Receive(this);
     }
 }
