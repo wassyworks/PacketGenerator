@@ -14,6 +14,10 @@ export class EnumParameter {
 export class EnumObject extends ParsedObject {
     #parameters: EnumParameter[] = [];
 
+    constructor(name: string) {
+        super(name, "enum");
+    }
+
     AddParameter(param: EnumParameter) {
         this.#parameters.push(param);
     }
@@ -25,7 +29,7 @@ export class EnumObject extends ParsedObject {
         );
     }
 
-    public override AcceptEnumConverter(converer: EnumConverter): void {
+    public override AcceptConverter(converer: EnumConverter): void {
         converer.Receive(this);
     }
 }

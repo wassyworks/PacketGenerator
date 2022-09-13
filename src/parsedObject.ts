@@ -3,6 +3,8 @@ import { EnumConverter } from "./enumConverter";
 
 type ParsedObjectType = "none" | "class" | "enum";
 
+type ConverterType = ClassConverter | EnumConverter;
+
 export class ParsedObject {
     #type: ParsedObjectType = "none";
     #name = "";
@@ -13,14 +15,14 @@ export class ParsedObject {
     GetName() {
         return this.#name;
     }
+    GetTag() {
+        return this.#type;
+    }
     DebugLog() {
         console.log("Error !! Call DebugLog Directly");
     }
 
-    AcceptClassConverter(converer: ClassConverter) {
-        console.log(`Error !! Call AcceptClassConverter Directly ${converer}`);
-    }
-    AcceptEnumConverter(converer: EnumConverter) {
-        console.log(`Error !! Call AcceptEnumConverter Directly ${converer}`);
+    AcceptConverter(converter: ConverterType) {
+        console.log(`Error !! Call AcceptClassConverter Directly ${converter}`);
     }
 }

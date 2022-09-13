@@ -36,7 +36,7 @@ export class ClassObject extends ParsedObject {
         console.log(`members:${JSON.stringify(this.#members, null, "  ")}`);
     }
 
-    public override AcceptClassConverter(converer: ClassConverter): void {
+    public override AcceptConverter(converer: ClassConverter): void {
         converer.Receive(this);
     }
 }
