@@ -26,6 +26,13 @@ export class ClassObject extends ParsedObject {
         this.#members.push(member);
     }
 
+    GetMembers(): ClassMember[] {
+        return this.#members;
+    }
+
+    GetPacketTag(): string {
+        return this.#packetTag;
+    }
     SetTag(tag: string) {
         this.#packetTag = tag;
     }

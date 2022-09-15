@@ -56,8 +56,7 @@ export class Parser {
         }
 
         // ファイル出力
-        const exporter = new CSharpExporter();
-        exporter.ExportAll(this.#parsedArray);
+        CSharpExporter.ExportAll(this.#parsedArray);
     }
 
     ReadBrackets(words: string[], start_index: number): [boolean, number] {

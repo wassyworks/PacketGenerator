@@ -15,7 +15,7 @@ export class ParsedObject {
     GetName() {
         return this.#name;
     }
-    GetTag() {
+    GetType() {
         return this.#type;
     }
     DebugLog() {
