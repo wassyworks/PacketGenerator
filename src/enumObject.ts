@@ -22,6 +22,10 @@ export class EnumObject extends ParsedObject {
         this.#parameters.push(param);
     }
 
+    GetParameters(): EnumParameter[] {
+        return this.#parameters;
+    }
+
     public override DebugLog() {
         console.log(`enumName:${JSON.stringify(this.GetName(), null, "  ")}`);
         console.log(

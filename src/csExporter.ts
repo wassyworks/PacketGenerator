@@ -9,10 +9,10 @@ export class CSharpExporter {
     static ExportAll(objects: ParsedObject[]) {
         const classConverter = new CsharpClassConverter();
         const enumConverter = new CsharpEnumConverter();
-        let outputString = "";
-        outputString += "using System;\n";
-        outputString += "using System.Collections;\n";
-        outputString += "using System.Collections.Generic;\n";
+        let classString = "";
+        classString += "using System;\n";
+        classString += "using System.Collections;\n";
+        classString += "using System.Collections.Generic;\n";
 
         // ヘッダ部分
 
@@ -31,7 +31,7 @@ export class CSharpExporter {
             }
         }
 
-        outputString += classConverter.OutputAll();
+        classString += classConverter.OutputAll();
 
         // .csファイルの出力
         try {
@@ -42,7 +42,11 @@ export class CSharpExporter {
             }
             fs.writeFileSync(
                 `${CSharpExporter.CSHARP_DIR}/Packet.cs`,
-                outputString,
+                classString,
+            );
+            fs.writeFileSync(
+                `${CSharpExporter.CSHARP_DIR}/PacketEnum.cs`,
+                enumConverter.OutputAll(),
             );
         } catch (e) {
             console.log(`file write exception. ${e}`);
