@@ -1,4 +1,5 @@
 import { ClassParser } from "./classParser";
+import { CSharpExporter } from "./csExporter";
 import { EnumParser } from "./enumParser";
 import { ParsedObject } from "./parsedObject";
 
@@ -54,9 +55,8 @@ export class Parser {
             }
         }
 
-        for (const obj of this.#parsedArray) {
-            obj.DebugLog();
-        }
+        // ファイル出力
+        CSharpExporter.ExportAll(this.#parsedArray);
     }
 
     ReadBrackets(words: string[], start_index: number): [boolean, number] {

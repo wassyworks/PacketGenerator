@@ -1,3 +1,4 @@
+import { EnumConverter } from "./enumConverter";
 import { ParsedObject } from "./parsedObject";
 
 export class EnumParameter {
@@ -13,8 +14,16 @@ export class EnumParameter {
 export class EnumObject extends ParsedObject {
     #parameters: EnumParameter[] = [];
 
+    constructor(name: string) {
+        super(name, "enum");
+    }
+
     AddParameter(param: EnumParameter) {
         this.#parameters.push(param);
+    }
+
+    GetParameters(): EnumParameter[] {
+        return this.#parameters;
     }
 
     public override DebugLog() {
@@ -22,5 +31,9 @@ export class EnumObject extends ParsedObject {
         console.log(
             `parameters:${JSON.stringify(this.#parameters, null, "  ")}`,
         );
+    }
+
+    public override AcceptConverter(converer: EnumConverter): void {
+        converer.Receive(this);
     }
 }

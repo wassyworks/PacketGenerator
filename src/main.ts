@@ -1,6 +1,5 @@
 import * as fs from "fs";
 import * as path from "path";
-import { exit } from "process";
 import { Parser } from "./parser";
 
 const workingDir = process.cwd();
