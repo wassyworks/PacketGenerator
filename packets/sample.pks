@@ -1,12 +1,13 @@
 enum PacketTags {
+    None
     SimpleEntity
-    SecondTag
+    SimpleEntityList
     InitValueTest = 10
     IncrementTest
 }
 
 // テスト用
-class SimpleEntityReq
+class SimpleEntity
 {
     PacketTag SimpleEntity
     u64 player_id
@@ -15,4 +16,10 @@ class SimpleEntityReq
     string name
     vec<i32> item_ids
     i32 hp
+}
+
+class SimpleEntityList
+{
+    PacketTag SimpleEntityList
+    vec<SimpleEntity> simple_entity_list
 }
