@@ -10,7 +10,7 @@ export class CsharpClassConverter implements ClassConverter {
         console.log(`cs class converter: ${obj.GetName()}`);
         const indentDepth = 1;
 
-        // TODO: C#のプリミティブに変換
+        // C#のプリミティブに変換
         let classBody = `\npublic class ${obj.GetName()} : IPacket\n`;
         classBody += "{\n";
 
@@ -39,7 +39,7 @@ export class CsharpClassConverter implements ClassConverter {
         classBody += `${this.GetIndent(indentDepth)}{\n`;
         classBody += `${this.GetIndent(
             indentDepth + 1,
-        )} PacketTag.${obj.GetPacketTag()};\n`;
+        )} return PacketTag.${obj.GetPacketTag()};\n`;
         classBody += `${this.GetIndent(indentDepth)}}\n`;
 
         // Serialize()生成
@@ -148,7 +148,7 @@ export class CsharpClassConverter implements ClassConverter {
             case "string":
                 return `To${vec}String`;
             default:
-                return type;
+                return `To${vec}Class`;
         }
     }
 }
