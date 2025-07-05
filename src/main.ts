@@ -12,7 +12,7 @@ const files = fs.readdirSync(`${workingDir}/${packetDirName}`, {
 
 // ディレクトリ直下のファイルのみ走査
 for (const file of files) {
-    if (path.extname(file.name) !== packetFileExtendion) {
+    if (path.extname(file.name) !== packetFileExtension) {
         continue;
     }
 
