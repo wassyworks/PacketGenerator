@@ -4,7 +4,7 @@ import { Parser } from "./parser";
 
 const workingDir = process.cwd();
 const packetDirName = "packets"; // パケットファイルを置くディレクトリ名
-const packetFileExtendion = ".pks"; // パケットスキーマ定義ファイルとして扱う拡張子名
+const packetFileExtension = ".pks"; // パケットスキーマ定義ファイルとして扱う拡張子名
 
 const files = fs.readdirSync(`${workingDir}/${packetDirName}`, {
     withFileTypes: true,
