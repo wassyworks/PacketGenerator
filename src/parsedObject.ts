@@ -23,6 +23,6 @@ export class ParsedObject {
     }
 
     AcceptConverter(converter: ConverterType) {
-        console.log(`Error !! Call AcceptClassConverter Directly ${converter}`);
+        console.log(`Error !! Call AcceptConverter Directly ${converter}`);
     }
 }
